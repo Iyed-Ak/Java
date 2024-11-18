@@ -1,0 +1,144 @@
+// Classe abstraite Ustensile
+abstract class Ustensile {
+    private int anneeFabrication;
+
+    public Ustensile(int anneeFabrication) {
+        this.anneeFabrication = anneeFabrication;
+    }
+
+    public int getAnneeFabrication() {
+        return anneeFabrication;
+    }
+
+    public void setAnneeFabrication(int anneeFabrication) {
+        this.anneeFabrication = anneeFabrication;
+    }
+
+    // Méthode abstraite pour calculer la valeur
+    public abstract double calculerValeur(int anneeActuelle);
+}
+
+// Classe abstraite Assiette
+abstract class Assiette extends Ustensile {
+    public Assiette(int anneeFabrication) {
+        super(anneeFabrication);
+    }
+
+    // Méthode abstraite pour calculer la surface
+    public abstract double calculerSurface();
+}
+
+// Classe AssietteRonde
+class AssietteRonde extends Assiette {
+    private double rayon;
+
+    public AssietteRonde(int anneeFabrication, double rayon) {
+        super(anneeFabrication);
+        this.rayon = rayon;
+    }
+
+    public double getRayon() {
+        return rayon;
+    }
+
+    public void setRayon(double rayon) {
+        this.rayon = rayon;
+    }
+
+    @Override
+    public double calculerSurface() {
+        return 3.14 * rayon * rayon;
+    }
+
+    @Override
+    public double calculerValeur(int anneeActuelle) {
+        int age = anneeActuelle - getAnneeFabrication();
+        return age > 50 ? age - 50 : 0;
+    }
+}
+
+// Classe AssietteCarree
+class AssietteCarree extends Assiette {
+    private double cote;
+
+    public AssietteCarree(int anneeFabrication, double cote) {
+        super(anneeFabrication);
+        this.cote = cote;
+    }
+
+    public double getCote() {
+        return cote;
+    }
+
+    public void setCote(double cote) {
+        this.cote = cote;
+    }
+
+    @Override
+    public double calculerSurface() {
+        return cote * cote;
+    }
+
+    @Override
+    public double calculerValeur(int anneeActuelle) {
+        int age = anneeActuelle - getAnneeFabrication();
+        return 5 * (age > 50 ? age - 50 : 0);
+    }
+}
+
+// Classe Cuillere
+class Cuillere extends Ustensile {
+    private double longueur;
+
+    public Cuillere(int anneeFabrication, double longueur) {
+        super(anneeFabrication);
+        this.longueur = longueur;
+    }
+
+    public double getLongueur() {
+        return longueur;
+    }
+
+    public void setLongueur(double longueur) {
+        this.longueur = longueur;
+    }
+
+    @Override
+    public double calculerValeur(int anneeActuelle) {
+        int age = anneeActuelle - getAnneeFabrication();
+        return age > 50 ? age - 50 : 0;
+    }
+}
+
+// Classe Collection avec méthode main
+public class Collection {
+    public static void main(String[] args) {
+        // Création des objets
+        Ustensile[] ustensiles = new Ustensile[5];
+        ustensiles[0] = new AssietteRonde(1970, 15.0);
+        ustensiles[1] = new AssietteCarree(1980, 20.0);
+        ustensiles[2] = new Cuillere(1960, 25.0);
+        ustensiles[3] = new AssietteRonde(2000, 10.0);
+        ustensiles[4] = new Cuillere(1950, 30.0);
+
+        // Affichage des valeurs
+        int anneeActuelle = 2024;
+        for (Ustensile u : ustensiles) {
+            System.out.println("Valeur de l'ustensile : " + u.calculerValeur(anneeActuelle));
+        }
+
+        // Afficher le nombre de cuillères
+        afficherCuilleres(ustensiles);
+    }
+
+    // Méthode pour afficher le nombre de cuillères
+    public static void afficherCuilleres(Ustensile[] ustensiles) {
+        int count = 0;
+        for (Ustensile u : ustensiles) {
+            if (u instanceof Cuillere) {
+                count++;
+            }
+        }
+        System.out.println("Il y a " + count + " cuillères.");
+    }
+}
